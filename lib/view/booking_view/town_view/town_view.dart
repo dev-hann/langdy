@@ -9,8 +9,20 @@ import 'package:langdy/widget/town_banner_widget.dart';
 import 'package:langdy/widget/town_horizontal_list_view.dart';
 import 'package:provider/provider.dart';
 
-class TownView extends StatelessWidget {
+class TownView extends StatefulWidget {
   const TownView({super.key});
+
+  @override
+  State<TownView> createState() => _TownViewState();
+}
+
+class _TownViewState extends State<TownView> {
+  @override
+  void initState() {
+    super.initState();
+
+    Provider.of<TownProvider>(context, listen: false).requestTownPage();
+  }
 
   Widget bannerPhotoListView({
     required List<TownBanner> bannerList,
@@ -39,8 +51,18 @@ class TownView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<TownProvider>(context);
+    TownProvider provider = Provider.of(context);
+    if (provider.hasError) {
+      return Center(
+        child: Text(provider.error!.message),
+      );
+    }
     final townPage = provider.townPage;
+    if (townPage == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     final bannerList = townPage.bannerList;
     final townList = townPage.townList;
     return ListView(
@@ -67,26 +89,5 @@ class TownView extends StatelessWidget {
           ),
       ],
     );
-    // return ListView(
-    //   children: [
-    //     bannerPhotoListView(
-    //       bannerList: bannerList,
-    //     ),
-    //     for (final town in townList)
-    //       townListview(
-    //         town: town,
-    //         onTapTown: (item) {
-    //           Navigator.of(context).push(
-    //             TownDetailView.route(),
-    //           );
-    //         },
-    //         onTapAllView: () {
-    //           Navigator.of(context).push(
-    //             TownAllView.route(),
-    //           );
-    //         },
-    //       ),
-    //   ],
-    // );
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:langdy/provider/town_detail_provider.dart';
 import 'package:langdy/provider/town_provider.dart';
 import 'package:langdy/provider/home_provider.dart';
+import 'package:langdy/repo/town_repo.dart';
+import 'package:langdy/use_case/town_use_case.dart';
 import 'package:langdy/util/date_time_format.dart';
 import 'package:langdy/view/main_view.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +31,9 @@ class MyApp extends StatelessWidget {
             create: (_) => HomeProvider(),
           ),
           ChangeNotifierProvider(
-            create: (_) => TownProvider(),
+            create: (_) => TownProvider(
+              TownUseCase(TownImpl()),
+            ),
           ),
           ChangeNotifierProvider(
             create: (_) => TownDetailProvider(),

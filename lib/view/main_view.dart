@@ -24,15 +24,15 @@ class MainView extends StatelessWidget {
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          label: "Home",
+          label: "홈",
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.bookmark_add_rounded),
-          label: "Booking",
+          label: "수업예약",
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.newspaper),
-          label: "Community",
+          label: "커뮤니티",
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),

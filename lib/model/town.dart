@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+
 import 'package:langdy/model/town_item.dart';
 
 class Town extends Equatable {
@@ -15,4 +16,20 @@ class Town extends Equatable {
         title,
         itemList,
       ];
+
+  factory Town.fromMap(Map<String, dynamic> map) {
+    return Town(
+      title: map['title'] as String,
+      itemList: List.from(map['itemList']).map((e) {
+        return TownItem.fromMap(e);
+      }).toList(),
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'title': title,
+      'itemList': itemList.map((x) => x.toMap()).toList(),
+    };
+  }
 }
