@@ -1,16 +1,25 @@
-# langdy
+# Langdy
 
-A new Flutter project.
+Clone Coding Langdy App.
 
-## Getting Started
+## Perpose
 
-This project is a starting point for a Flutter application.
+### 공통
 
-A few resources to get you started if this is your first Flutter project:
+* 모든 데이터 통신은 api 호출에 성공한 것으로 가정하고, 모든 api 호출 결과는 작업 편의에 맞는 임의의 값을 사용
+* 모든 요청 사항은 작업자 판단에 따라 간소화 가능
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 목록 페이지
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* 최상단 이미지 캐로셀 행 구현
+* 가로 스크롤 행 구현
+* 행별 ‘전체보기’ 버튼 제외
+
+### 상세 페이지
+
+* 참여자 후기 행 구현
+* 그 외 모든 행 제외
+* 예약하기 버튼/모달 구현
+* 예약하기 모달에서 예약하기 누르면 현재 선택된 세션에 예약 api 호출
+* 예약 성공한 경우 버튼 텍스트는 취소하기로 변경
+* 예약 실패한 경우 버튼 비활성화하고 텍스트는 오류발생으로 변경
