@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:langdy/enum/language_type.dart';
 import 'package:langdy/model/town.dart';
 import 'package:langdy/model/town_banner.dart';
 import 'package:langdy/model/town_item.dart';
+import 'package:langdy/provider/town_provider.dart';
 import 'package:langdy/view/booking_view/town_view/town_all_view.dart';
 import 'package:langdy/view/booking_view/town_view/town_detail_view.dart';
 import 'package:langdy/widget/town_banner_widget.dart';
 import 'package:langdy/widget/town_horizontal_list_view.dart';
+import 'package:provider/provider.dart';
 
 class TownView extends StatelessWidget {
   const TownView({super.key});
 
-  Widget bannerPhotoListView() {
+  Widget bannerPhotoListView({
+    required List<TownBanner> bannerList,
+  }) {
     return TownBannerWidget(
-      itemList: const [
-        TownBanner(
-          image: "https://picsum.photos/200/300",
-          target: "",
-        ),
-      ],
+      itemList: bannerList,
       onTapBanner: (item) {},
     );
   }
@@ -41,115 +39,54 @@ class TownView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<TownProvider>(context);
+    final townPage = provider.townPage;
+    final bannerList = townPage.bannerList;
+    final townList = townPage.townList;
     return ListView(
       children: [
-        bannerPhotoListView(),
-        townListview(
-          town: Town(
-            title: "TRUTH OR DARE",
-            itemList: List.generate(
-              10,
-              (index) {
-                return TownItem(
-                  id: "$index",
-                  title: "TestTitle$index" * (index + 1),
-                  image: "https://picsum.photos/200/300",
-                  state: TownItemState.booking,
-                  languageType: LanguageType.en,
-                  dateTimeList: [
-                    DateTime.now(),
-                    DateTime.now().add(const Duration(days: 1)),
-                  ],
-                  price: 0,
-                  level: "level$index",
-                  maxiumUserCount: 10,
-                  currentUserCount: index,
-                );
-              },
-            ),
-          ),
-          onTapTown: (item) {
-            Navigator.of(context).push(
-              TownDetailView.route(),
-            );
-          },
-          onTapAllView: () {
-            Navigator.of(context).push(
-              TownAllView.route(),
-            );
-          },
+        bannerPhotoListView(
+          bannerList: bannerList,
         ),
-        townListview(
-          town: Town(
-            title: "TRUTH OR DARE",
-            itemList: List.generate(
-              10,
-              (index) {
-                return TownItem(
-                  id: "$index",
-                  title: "TestTitle$index" * (index + 1),
-                  image: "https://picsum.photos/200/300",
-                  state: TownItemState.bookedUp,
-                  languageType: LanguageType.en,
-                  dateTimeList: [
-                    DateTime.now(),
-                    DateTime.now().add(const Duration(days: 1)),
-                  ],
-                  price: 0,
-                  level: "level$index",
-                  maxiumUserCount: 10,
-                  currentUserCount: index,
-                );
-              },
-            ),
+        for (final town in townList)
+          townListview(
+            town: town,
+            onTapTown: (item) {
+              Navigator.of(context).push(
+                TownDetailView.route(),
+              );
+              // Navigator.of(context).pushNamed(
+              //   "/town_detail",
+              // );
+            },
+            onTapAllView: () {
+              Navigator.of(context).push(
+                TownAllView.route(),
+              );
+            },
           ),
-          onTapTown: (item) {
-            Navigator.of(context).push(
-              TownDetailView.route(),
-            );
-          },
-          onTapAllView: () {
-            Navigator.of(context).push(
-              TownAllView.route(),
-            );
-          },
-        ),
-        townListview(
-          town: Town(
-            title: "TRUTH OR DARE",
-            itemList: List.generate(
-              10,
-              (index) {
-                return TownItem(
-                  id: "$index",
-                  title: "TestTitle$index" * (index + 1),
-                  image: "https://picsum.photos/200/300",
-                  state: TownItemState.finished,
-                  languageType: LanguageType.en,
-                  dateTimeList: [
-                    DateTime.now(),
-                    DateTime.now().add(const Duration(days: 1)),
-                  ],
-                  price: 0,
-                  level: "level$index",
-                  maxiumUserCount: 10,
-                  currentUserCount: index,
-                );
-              },
-            ),
-          ),
-          onTapTown: (item) {
-            Navigator.of(context).push(
-              TownDetailView.route(),
-            );
-          },
-          onTapAllView: () {
-            Navigator.of(context).push(
-              TownAllView.route(),
-            );
-          },
-        )
       ],
     );
+    // return ListView(
+    //   children: [
+    //     bannerPhotoListView(
+    //       bannerList: bannerList,
+    //     ),
+    //     for (final town in townList)
+    //       townListview(
+    //         town: town,
+    //         onTapTown: (item) {
+    //           Navigator.of(context).push(
+    //             TownDetailView.route(),
+    //           );
+    //         },
+    //         onTapAllView: () {
+    //           Navigator.of(context).push(
+    //             TownAllView.route(),
+    //           );
+    //         },
+    //       ),
+    //   ],
+    // );
   }
 }

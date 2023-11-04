@@ -6,8 +6,8 @@ import 'package:langdy/view/booking_view/booking_view.dart';
 import 'package:langdy/view/community_view/community_view.dart';
 import 'package:langdy/view/home_view/home_view.dart';
 import 'package:langdy/view/user_view/user_view.dart';
-import 'package:langdy/widget/ticket_dialog.dart';
 import 'package:langdy/widget/ticket_float_widget.dart';
+import 'package:langdy/widget/ticket_overlay.dart';
 import 'package:provider/provider.dart';
 
 class MainView extends StatelessWidget {
@@ -58,16 +58,29 @@ class MainView extends StatelessWidget {
   Widget body({
     required PageType pageType,
   }) {
-    switch (pageType) {
-      case PageType.home:
-        return const HomeView();
-      case PageType.booking:
-        return const BookingView();
-      case PageType.community:
-        return const CommunityView();
-      case PageType.user:
-        return const UserView();
-    }
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: HomeView.name,
+      // routes: {
+      // TownDetailView.name: (_) => const TownDetailView(),
+      // },
+      home: Material(
+        child: Builder(
+          builder: (context) {
+            switch (pageType) {
+              case PageType.home:
+                return const HomeView();
+              case PageType.booking:
+                return const BookingView();
+              case PageType.community:
+                return const CommunityView();
+              case PageType.user:
+                return const UserView();
+            }
+          },
+        ),
+      ),
+    );
   }
 
   @override
@@ -93,9 +106,7 @@ class MainView extends StatelessWidget {
         child: Scaffold(
           body: Stack(
             children: [
-              body(
-                pageType: pageType,
-              ),
+              body(pageType: pageType),
               Align(
                 alignment: Alignment.bottomCenter,
                 child: TicketFloatWidget(
@@ -115,10 +126,21 @@ class MainView extends StatelessWidget {
             ],
           ),
           bottomNavigationBar: bottom(
-            currentIndex: pageType.index,
+            currentIndex: provider.pageType.index,
             onTap: (index) {
-              final pageType = PageType.values[index];
-              provider.moveToPage(pageType);
+              provider.moveToPage(PageType.values[index]);
+              // provider.updatePageIndex(index);
+
+              // final pageList = [
+              //   HomeView.name,
+              //   BookingView.name,
+              //   CommunityView.name,
+              //   UserView.name,
+              // ];
+              // print(pageList[index]);
+              // Navigator.pushNamed(context, pageList[index]);
+              // final pageType = PageType.values[index];
+              // provider.moveToPage(pageType);
             },
           ),
         ),

@@ -3,6 +3,14 @@ import 'package:langdy/enum/page_type.dart';
 import 'package:langdy/widget/ticket_float_widget.dart';
 
 class HomeProvider extends ChangeNotifier {
+  int _pageIndex = 0;
+  int get pageIndex => _pageIndex;
+
+  void updatePageIndex(int index) {
+    _pageIndex = index;
+    notifyListeners();
+  }
+
   PageType _pageType = PageType.home;
 
   PageType get pageType => _pageType;
@@ -18,7 +26,7 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  TicketVisibility _ticketVisibility = TicketVisibility.show;
+  TicketVisibility _ticketVisibility = TicketVisibility.hide;
 
   TicketVisibility get ticketVisibility => _ticketVisibility;
 
@@ -28,11 +36,11 @@ class HomeProvider extends ChangeNotifier {
   }
 
   void showTicket() {
-    if (pageType == PageType.community) {
-      return;
-    }
-    _ticketVisibility = TicketVisibility.show;
-    notifyListeners();
+    // if (pageType == PageType.community) {
+    //   return;
+    // }
+    // _ticketVisibility = TicketVisibility.show;
+    // notifyListeners();
   }
 
   TicketMode _ticketMode = TicketMode.normal;

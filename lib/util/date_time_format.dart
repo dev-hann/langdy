@@ -9,4 +9,8 @@ class DateTimeFormat {
   static String townFormat(DateTime dateTime) {
     return DateFormat('MM-dd(E)', 'ko').format(dateTime);
   }
+
+  static String townCommentformat(DateTime dateTime) {
+    return DateFormat('yyyy-MM-dd').format(dateTime);
+  }
 }

@@ -15,6 +15,7 @@ dependencies:
   auto_size_text:
   cupertino_icons: ^1.0.2
   intl:
+  sliding_up_panel:
 
 dev_dependencies:
   flutter_test:

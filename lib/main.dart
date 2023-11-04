@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:langdy/provider/booking_provider.dart';
+import 'package:langdy/provider/town_detail_provider.dart';
+import 'package:langdy/provider/town_provider.dart';
 import 'package:langdy/provider/home_provider.dart';
 import 'package:langdy/util/date_time_format.dart';
 import 'package:langdy/view/main_view.dart';
@@ -27,8 +28,11 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(
             create: (_) => HomeProvider(),
           ),
-          Provider(
-            create: (_) => BookingProvider(),
+          ChangeNotifierProvider(
+            create: (_) => TownProvider(),
+          ),
+          ChangeNotifierProvider(
+            create: (_) => TownDetailProvider(),
           ),
         ],
         child: const MainView(),
