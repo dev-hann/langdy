@@ -23,6 +23,7 @@ class BookingView extends StatelessWidget {
           ),
           Expanded(
             child: TabBarView(
+              physics: NeverScrollableScrollPhysics(),
               children: [
                 StudyView(),
                 TownView(),
