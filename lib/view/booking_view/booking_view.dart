@@ -18,9 +18,10 @@ class BookingView extends StatelessWidget {
             labelColor: Colors.orangeAccent,
             unselectedLabelColor: Colors.grey,
             indicatorSize: TabBarIndicatorSize.tab,
+            indicatorColor: Colors.orangeAccent,
             tabs: [
-              Tab(text: "1:1 Class"),
-              Tab(text: "Langdy Town"),
+              Tab(text: "1:1 수업"),
+              Tab(text: "20인 실전 랭디타운"),
             ],
           ),
           Expanded(

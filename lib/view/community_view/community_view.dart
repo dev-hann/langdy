@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:langdy/widget/wip_widget.dart';
 
 class CommunityView extends StatelessWidget {
   const CommunityView({super.key});
@@ -7,6 +8,6 @@ class CommunityView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text("CommunityView");
+    return const WorkInProcessWidget();
   }
 }

@@ -22,4 +22,24 @@ class TownComment extends Equatable {
         title,
         comment,
       ];
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'userName': userName,
+      'image': image,
+      'dateTime': dateTime.millisecondsSinceEpoch,
+      'title': title,
+      'comment': comment,
+    };
+  }
+
+  factory TownComment.fromMap(Map<String, dynamic> map) {
+    return TownComment(
+      userName: map['userName'] as String,
+      image: map['image'] as String,
+      dateTime: DateTime.fromMillisecondsSinceEpoch(map['dateTime'] as int),
+      title: map['title'] as String,
+      comment: map['comment'] as String,
+    );
+  }
 }

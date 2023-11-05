@@ -25,8 +25,8 @@ class TownItemCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("$currentCount Booked"),
-                  Text("$maxiumCount Total"),
+                  Text("$currentCount명 에약"),
+                  Text("$maxiumCount명 정원"),
                 ],
               ),
               LinearProgressIndicator(
@@ -57,7 +57,7 @@ class TownItemCard extends StatelessWidget {
       child: const Padding(
         padding: EdgeInsets.all(4.0),
         child: Text(
-          "Free",
+          "무료",
           style: TextStyle(
             color: Colors.white,
           ),
@@ -74,9 +74,9 @@ class TownItemCard extends StatelessWidget {
       case TownItemState.booking:
         return const SizedBox();
       case TownItemState.bookedUp:
-        text = "Booked Up!:)";
+        text = "마감됐어요:)";
       case TownItemState.finished:
-        text = "Finished!:)";
+        text = "종료됐어요:)";
     }
     return ColoredBox(
       color: Colors.black.withOpacity(0.6),
@@ -140,7 +140,7 @@ class TownItemCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             imageWidget(
-              image: item.image,
+              image: item.bannerImage,
               isFree: item.price == 0,
               state: item.state,
             ),
@@ -158,14 +158,15 @@ class TownItemCard extends StatelessWidget {
               minFontSize: 14,
             ),
             Text(
-              item.dateTimeList
+              item.scheduleList
+                  .map((e) => e.beginDateTime)
                   .map((dateTime) => DateTimeFormat.townFormat(dateTime))
                   .join(", "),
               style: const TextStyle(color: Colors.grey),
             ),
             userCountBar(
-              maxiumCount: item.maxiumUserCount,
-              currentCount: item.currentUserCount,
+              maxiumCount: item.totalMaxiumUserCount,
+              currentCount: item.totalCurrentUserCount,
             ),
           ],
         ),

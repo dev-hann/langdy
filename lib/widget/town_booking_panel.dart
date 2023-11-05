@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:langdy/enum/language_type.dart';
+import 'package:langdy/model/town_detail_page.dart';
+import 'package:langdy/model/town_item.dart';
+import 'package:langdy/util/date_time_format.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-class PanelBookingPanel extends StatelessWidget {
-  PanelBookingPanel({
+class PanelBookingPanel extends StatefulWidget {
+  const PanelBookingPanel({
     super.key,
     required this.body,
+    required this.detailPage,
+    required this.onTapBooking,
   });
-
+  final TownDetailPage detailPage;
+  final Function(TownItemSchedule schedule) onTapBooking;
   final Widget body;
-  final PanelController controller = PanelController();
-  final ValueNotifier<double> _offsetNotifier = ValueNotifier(0);
 
-  Widget headerWidget() {
+  @override
+  State<PanelBookingPanel> createState() => _PanelBookingPanelState();
+}
+
+class _PanelBookingPanelState extends State<PanelBookingPanel> {
+  final ValueNotifier<double> _offsetNotifier = ValueNotifier(0);
+  final PanelController controller = PanelController();
+
+  Widget headerWidget({
+    required String title,
+    required VoidCallback onTapClose,
+    required VoidCallback onTapOpen,
+  }) {
     return ValueListenableBuilder<double>(
       valueListenable: _offsetNotifier,
       builder: (context, value, child) {
@@ -24,11 +41,11 @@ class PanelBookingPanel extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      const Expanded(child: Text("title")),
+                      Expanded(
+                        child: Text(title),
+                      ),
                       IconButton(
-                        onPressed: () {
-                          controller.close();
-                        },
+                        onPressed: onTapClose,
                         icon: const Icon(
                           Icons.keyboard_arrow_down_rounded,
                           size: 32.0,
@@ -45,10 +62,10 @@ class PanelBookingPanel extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: ElevatedButton(
-            onPressed: () {
-              controller.open();
-            },
-            child: const Text("Booking"),
+            onPressed: onTapOpen,
+            child: const Center(
+              child: Text("예약하기"),
+            ),
           ),
         );
       },
@@ -61,56 +78,73 @@ class PanelBookingPanel extends StatelessWidget {
       children: [
         ElevatedButton(
           onPressed: () {},
-          child: const Text("Share"),
+          child: const Text("공유하기"),
         ),
         const SizedBox(width: 16.0),
         ElevatedButton(
           onPressed: () {},
-          child: const Text("Enter"),
+          child: const Text("입장하기"),
         ),
       ],
     );
   }
 
-  Widget typeWidget() {
-    return const Row(
+  Widget typeWidget({
+    required LanguageType languageType,
+    required String level,
+    required int price,
+  }) {
+    return Row(
       children: [
-        Text("lang: zh"),
-        Text("lang: zh"),
-        Text("lang: zh"),
+        Text("언어: ${languageType.toLabel()}"),
+        const SizedBox(width: 8.0),
+        Text("난이도: $level"),
+        const SizedBox(width: 8.0),
+        Text("참가비: $price"),
       ],
     );
   }
 
-  Widget scheduleItemWidget() {
+  Widget scheduleItemWidget({
+    required TownItemSchedule schedule,
+  }) {
     return Row(
       children: [
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Datetime"),
-              Text("time"),
-              Text("usercount"),
+              Text(
+                  DateTimeFormat.townBookingDateformat(schedule.beginDateTime)),
+              Text(
+                  "${DateTimeFormat.townBookingTimeformat(schedule.beginDateTime)} - ${DateTimeFormat.townBookingTimeformat(schedule.endDatetime)}"),
+              Text(
+                  "${schedule.currentUserCount}명 예약 / ${schedule.maxiumUserCount}명 정원"),
             ],
           ),
         ),
         ElevatedButton(
-          onPressed: () {},
-          child: const Text("Booking"),
+          onPressed: () {
+            widget.onTapBooking(schedule);
+          },
+          child: const Text("예약하기"),
         ),
       ],
     );
   }
 
-  Widget scheduleListView() {
+  Widget scheduleListView({
+    required List<TownItemSchedule> scheduleList,
+  }) {
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: 4,
+      itemCount: scheduleList.length,
       itemBuilder: (context, index) {
         return Column(
           children: [
-            scheduleItemWidget(),
+            scheduleItemWidget(
+              schedule: scheduleList[index],
+            ),
             const Divider(),
           ],
         );
@@ -130,36 +164,13 @@ class PanelBookingPanel extends StatelessWidget {
     );
   }
 
-  Widget panelWidget() {
-    return Column(
-      children: [
-        headerWidget(),
-        Expanded(
-          child: ListView(
-            padding: const EdgeInsets.all(16.0),
-            children: [
-              typeWidget(),
-              const SizedBox(height: 16.0),
-              scheduleListView(),
-              descText(),
-            ],
-          ),
-        ),
-        footerButton(),
-        const SizedBox(
-          height: kBottomNavigationBarHeight * 1.6,
-        )
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Material(
       child: SlidingUpPanel(
         body: Padding(
           padding: const EdgeInsets.only(bottom: 150.0),
-          child: body,
+          child: widget.body,
         ),
         minHeight: 72.0,
         maxHeight: MediaQuery.of(context).size.height,
@@ -167,8 +178,41 @@ class PanelBookingPanel extends StatelessWidget {
         onPanelSlide: (position) {
           _offsetNotifier.value = position;
         },
-        // isDraggable: false,
-        panel: panelWidget(),
+        isDraggable: false,
+        panel: Column(
+          children: [
+            headerWidget(
+              title: widget.detailPage.title,
+              onTapOpen: () {
+                controller.open();
+              },
+              onTapClose: () {
+                controller.close();
+              },
+            ),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.all(16.0),
+                children: [
+                  typeWidget(
+                    languageType: widget.detailPage.languageType,
+                    level: widget.detailPage.level,
+                    price: widget.detailPage.price,
+                  ),
+                  const SizedBox(height: 16.0),
+                  scheduleListView(
+                    scheduleList: widget.detailPage.scheduleList,
+                  ),
+                  descText(),
+                ],
+              ),
+            ),
+            footerButton(),
+            const SizedBox(
+              height: kBottomNavigationBarHeight * 1.6,
+            )
+          ],
+        ),
       ),
     );
   }

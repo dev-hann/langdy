@@ -22,7 +22,7 @@ class TownHorizontalListView extends StatelessWidget {
         Text(title),
         GestureDetector(
           onTap: onTapAllView,
-          child: const Text("detail"),
+          child: const Text("전체보기"),
         ),
       ],
     );

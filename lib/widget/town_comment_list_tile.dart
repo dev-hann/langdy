@@ -20,8 +20,18 @@ class TownCommentListTile extends StatelessWidget {
         item.image,
         width: _userImageSize,
         height: _userImageSize,
+        fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
-          return const Icon(Icons.person);
+          return const DecoratedBox(
+            decoration: BoxDecoration(
+              color: Colors.grey,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              Icons.person,
+              size: _userImageSize,
+            ),
+          );
         },
       ),
     );
@@ -67,24 +77,37 @@ class TownCommentListTile extends StatelessWidget {
         if (lines.length < 3) {
           return const SizedBox();
         }
-        return ValueListenableBuilder<bool>(
-          valueListenable: _detailNotifier,
-          builder: (context, isDetail, _) {
-            if (isDetail) {
-              return TextButton(
-                onPressed: () {
-                  _detailNotifier.value = false;
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8.0),
+          child: ValueListenableBuilder<bool>(
+            valueListenable: _detailNotifier,
+            builder: (context, isDetail, _) {
+              if (isDetail) {
+                return GestureDetector(
+                  onTap: () {
+                    _detailNotifier.value = false;
+                  },
+                  child: const Text(
+                    "간략히 접기",
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                );
+              }
+              return GestureDetector(
+                onTap: () {
+                  _detailNotifier.value = true;
                 },
-                child: const Text("Short"),
+                child: const Text(
+                  "자세히 보기",
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                  ),
+                ),
               );
-            }
-            return TextButton(
-              onPressed: () {
-                _detailNotifier.value = true;
-              },
-              child: const Text("Detail"),
-            );
-          },
+            },
+          ),
         );
       },
     );

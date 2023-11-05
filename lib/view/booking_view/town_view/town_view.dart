@@ -20,7 +20,6 @@ class _TownViewState extends State<TownView> {
   @override
   void initState() {
     super.initState();
-
     Provider.of<TownProvider>(context, listen: false).requestTownPage();
   }
 
@@ -75,7 +74,7 @@ class _TownViewState extends State<TownView> {
             town: town,
             onTapTown: (item) {
               Navigator.of(context).push(
-                TownDetailView.route(),
+                TownDetailView.route(item.id),
               );
               // Navigator.of(context).pushNamed(
               //   "/town_detail",
@@ -83,7 +82,9 @@ class _TownViewState extends State<TownView> {
             },
             onTapAllView: () {
               Navigator.of(context).push(
-                TownAllView.route(),
+                TownAllView.route(
+                  itemList: town.itemList,
+                ),
               );
             },
           ),

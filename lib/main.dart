@@ -18,12 +18,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final townUseCase = TownUseCase(TownImpl());
     return MaterialApp(
       title: 'Langdy',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        // useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          foregroundColor: Colors.black,
+        ),
       ),
       home: MultiProvider(
         providers: [
@@ -31,12 +36,10 @@ class MyApp extends StatelessWidget {
             create: (_) => HomeProvider(),
           ),
           ChangeNotifierProvider(
-            create: (_) => TownProvider(
-              TownUseCase(TownImpl()),
-            ),
+            create: (_) => TownProvider(townUseCase),
           ),
           ChangeNotifierProvider(
-            create: (_) => TownDetailProvider(),
+            create: (_) => TownDetailProvider(townUseCase),
           ),
         ],
         child: const MainView(),

@@ -6,4 +6,8 @@ class CustomError {
   factory CustomError.fromObject(Object e) {
     return CustomError(e.toString());
   }
+
+  factory CustomError.emptyData() {
+    return CustomError("EmptyData");
+  }
 }

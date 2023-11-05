@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:langdy/widget/wip_widget.dart';
 
 class UserView extends StatelessWidget {
   const UserView({super.key});
@@ -6,6 +7,6 @@ class UserView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text("MY View");
+    return const WorkInProcessWidget();
   }
 }

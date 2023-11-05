@@ -9,58 +9,108 @@ enum TownItemState {
   finished,
 }
 
-class TownItem extends Equatable {
-  const TownItem({
+class TownItemSchedule extends Equatable {
+  const TownItemSchedule({
     required this.id,
-    required this.title,
-    required this.image,
-    required this.state,
-    required this.languageType,
-    required this.dateTimeList,
-    required this.price,
-    required this.level,
+    required this.beginDateTime,
+    required this.endDatetime,
     required this.maxiumUserCount,
     required this.currentUserCount,
   });
   final String id;
-  final String title;
-  final String image;
-  final String level;
-  final TownItemState state;
-  final LanguageType languageType;
-  final List<DateTime> dateTimeList;
-  final int price;
+  final DateTime beginDateTime;
+  final DateTime endDatetime;
   final int maxiumUserCount;
   final int currentUserCount;
 
   @override
   List<Object?> get props => [
         id,
+        beginDateTime,
+        endDatetime,
+        maxiumUserCount,
+        currentUserCount,
+      ];
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'beginDateTime': beginDateTime.millisecondsSinceEpoch,
+      'endDateTime': endDatetime.millisecondsSinceEpoch,
+      'maxiumUserCount': maxiumUserCount,
+      'currentUserCount': currentUserCount,
+    };
+  }
+
+  factory TownItemSchedule.fromMap(Map<String, dynamic> map) {
+    return TownItemSchedule(
+      id: map['id'],
+      beginDateTime:
+          DateTime.fromMillisecondsSinceEpoch(map['beginDateTime'] as int),
+      endDatetime:
+          DateTime.fromMillisecondsSinceEpoch(map['endDateTime'] as int),
+      maxiumUserCount: map['maxiumUserCount'] as int,
+      currentUserCount: map['currentUserCount'] as int,
+    );
+  }
+}
+
+class TownItem extends Equatable {
+  const TownItem({
+    required this.id,
+    required this.title,
+    required this.bannerImage,
+    required this.state,
+    required this.languageType,
+    required this.price,
+    required this.level,
+    required this.scheduleList,
+  });
+  final String id;
+  final String title;
+  final String bannerImage;
+  final String level;
+  final TownItemState state;
+  final LanguageType languageType;
+  final int price;
+  final List<TownItemSchedule> scheduleList;
+
+  int get totalMaxiumUserCount {
+    return scheduleList
+        .map((e) => e.maxiumUserCount)
+        .reduce((value, element) => value + element);
+  }
+
+  int get totalCurrentUserCount {
+    return scheduleList
+        .map((e) => e.currentUserCount)
+        .reduce((value, element) => value + element);
+  }
+
+  @override
+  List<Object?> get props => [
+        id,
         title,
-        image,
+        bannerImage,
         level,
         state,
         languageType,
-        dateTimeList,
         price,
+        scheduleList,
       ];
 
   factory TownItem.fromMap(Map<String, dynamic> map) {
     return TownItem(
       id: map['id'] as String,
       title: map['title'] as String,
-      image: map['image'] as String,
+      bannerImage: map['bannerImage'] as String,
       level: map['level'] as String,
       state: TownItemState.values[map['state']],
       languageType: LanguageType.values[map['languageType']],
-      dateTimeList: List<DateTime>.from(
-        (map['dateTimeList'] as List<int>).map<DateTime>(
-          (x) => DateTime.fromMillisecondsSinceEpoch(x),
-        ),
-      ),
       price: map['price'] as int,
-      maxiumUserCount: map['maxiumUserCount'] as int,
-      currentUserCount: map['currentUserCount'] as int,
+      scheduleList: List.from(map['scheduleList']).map((e) {
+        return TownItemSchedule.fromMap(e);
+      }).toList(),
     );
   }
 
@@ -68,15 +118,12 @@ class TownItem extends Equatable {
     return <String, dynamic>{
       'id': id,
       'title': title,
-      'image': image,
+      'bannerImage': bannerImage,
       'level': level,
       'state': state.index,
       'languageType': languageType.index,
-      'dateTimeList':
-          dateTimeList.map((x) => x.millisecondsSinceEpoch).toList(),
+      'scheduleList': scheduleList.map((e) => e.toMap()).toList(),
       'price': price,
-      'maxiumUserCount': maxiumUserCount,
-      'currentUserCount': currentUserCount,
     };
   }
 }

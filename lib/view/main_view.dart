@@ -58,28 +58,33 @@ class MainView extends StatelessWidget {
   Widget body({
     required PageType pageType,
   }) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: HomeView.name,
-      // routes: {
-      // TownDetailView.name: (_) => const TownDetailView(),
-      // },
-      home: Material(
-        child: Builder(
-          builder: (context) {
-            switch (pageType) {
-              case PageType.home:
-                return const HomeView();
-              case PageType.booking:
-                return const BookingView();
-              case PageType.community:
-                return const CommunityView();
-              case PageType.user:
-                return const UserView();
-            }
-          },
-        ),
-      ),
+    return Builder(
+      builder: (context) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          initialRoute: HomeView.name,
+          theme: Theme.of(context),
+          // routes: {
+          // TownDetailView.name: (_) => const TownDetailView(),
+          // },
+          home: Material(
+            child: Builder(
+              builder: (context) {
+                switch (pageType) {
+                  case PageType.home:
+                    return const HomeView();
+                  case PageType.booking:
+                    return const BookingView();
+                  case PageType.community:
+                    return const CommunityView();
+                  case PageType.user:
+                    return const UserView();
+                }
+              },
+            ),
+          ),
+        );
+      },
     );
   }
 
