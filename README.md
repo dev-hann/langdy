@@ -26,7 +26,7 @@ Clone Coding Langdy App.
 
 ## 화면
 
-<https://github.com/dev-hann/langdy/assets/54878755/ba269d5d-f51b-43bf-80b4-afc1762583fc>>
+<https://github.com/dev-hann/langdy/assets/54878755/ba269d5d-f51b-43bf-80b4-afc1762583fc>
 
 ## 시스템 구조
 
