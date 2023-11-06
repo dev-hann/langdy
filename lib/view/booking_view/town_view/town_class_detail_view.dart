@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:langdy/model/town_class.dart';
+import 'package:langdy/model/town_class_detail.dart';
+import 'package:langdy/model/town_class_schedule.dart';
 import 'package:langdy/model/town_comment.dart';
 import 'package:langdy/provider/town_detail_provider.dart';
 import 'package:langdy/widget/town_booking_panel.dart';
@@ -8,14 +11,14 @@ import 'package:provider/provider.dart';
 class TownClassDetailView extends StatefulWidget {
   const TownClassDetailView({
     super.key,
-    required this.townID,
+    required this.townClass,
   });
-  final String townID;
+  final TownClass townClass;
 
-  static PageRoute route(String townID) {
+  static PageRoute route(TownClass townClass) {
     return MaterialPageRoute(builder: (_) {
       return TownClassDetailView(
-        townID: townID,
+        townClass: townClass,
       );
     });
   }
@@ -29,7 +32,7 @@ class _TownClassDetailViewState extends State<TownClassDetailView> {
   void initState() {
     super.initState();
     Provider.of<TownDetailProvider>(context, listen: false)
-        .requestTownClassDetail(widget.townID);
+        .requestTownClassDetail(widget.townClass.id);
   }
 
   AppBar appBar({
@@ -107,42 +110,80 @@ class _TownClassDetailViewState extends State<TownClassDetailView> {
   Widget build(BuildContext context) {
     final provider = Provider.of<TownDetailProvider>(context);
     if (provider.hasError) {
-      return Center(
-        child: Text(provider.error!.message),
-      );
-    }
-    final detailPage = provider.detailPage;
-    if (detailPage == null) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-    return Stack(
-      children: [
-        PanelBookingPanel(
-          detailPage: detailPage,
-          onTapBooking: (schedule) {
-            provider.requestBookingSchedule(schedule);
-          },
-          body: Scaffold(
-            appBar: appBar(
-              title: detailPage.title,
-            ),
-            body: ListView(
-              children: [
-                bannerImage(
-                  image: detailPage.bannerImage,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: commentListview(
-                    commentList: provider.commentList,
-                    onTapLoadComment: provider.loadNextCommentList,
-                  ),
+      WidgetsBinding.instance.endOfFrame.then((value) async {
+        await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("오류 발생!"),
+              content: const Text("알수 없는 오류가 발생했습니다 \n잠시 후 다시 시도해주세요:("),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("확인"),
                 ),
               ],
+            );
+          },
+        );
+
+        provider.clearError();
+      });
+    }
+    final detail = provider.detail;
+    return Stack(
+      children: [
+        Stack(
+          children: [
+            Scaffold(
+              appBar: appBar(
+                title: widget.townClass.title,
+              ),
+              body: Builder(
+                builder: (context) {
+                  if (detail == null) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return ListView(
+                    children: [
+                      bannerImage(
+                        image: detail.bannerImage,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: commentListview(
+                          commentList: provider.commentList,
+                          onTapLoadComment: provider.loadNextCommentList,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: kBottomNavigationBarHeight,
+                      ),
+                    ],
+                  );
+                },
+              ),
             ),
-          ),
+            PanelBookingPanel(
+              detail: detail,
+              onTapCancel: (schedule) {
+                provider.requestCancelSchedule(
+                  townClassID: widget.townClass.id,
+                  schedule: schedule,
+                );
+              },
+              onTapBooking: (schedule) {
+                provider.requestBookingSchedule(
+                  townClassID: widget.townClass.id,
+                  schedule: schedule,
+                );
+              },
+            ),
+          ],
         ),
         overlayWidget(provider.isOverlayLoading),
       ],

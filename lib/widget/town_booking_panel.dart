@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:langdy/enum/language_type.dart';
 import 'package:langdy/model/town_class_detail.dart';
 import 'package:langdy/model/town_class.dart';
+import 'package:langdy/model/town_class_schedule.dart';
 import 'package:langdy/util/date_time_format.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class PanelBookingPanel extends StatefulWidget {
   const PanelBookingPanel({
     super.key,
-    required this.body,
-    required this.detailPage,
+    required this.detail,
     required this.onTapBooking,
+    required this.onTapCancel,
   });
-  final TownClassDetail detailPage;
+  final TownClassDetail? detail;
   final Function(TownClassSchedule schedule) onTapBooking;
-  final Widget body;
+  final Function(TownClassSchedule schedule) onTapCancel;
 
   @override
   State<PanelBookingPanel> createState() => _PanelBookingPanelState();
@@ -123,13 +124,41 @@ class _PanelBookingPanelState extends State<PanelBookingPanel> {
             ],
           ),
         ),
-        ElevatedButton(
-          onPressed: () {
-            widget.onTapBooking(schedule);
-          },
-          child: const Text("예약하기"),
+        scheduleButton(
+          schedule: schedule,
         ),
       ],
+    );
+  }
+
+  Widget scheduleButton({
+    required TownClassSchedule schedule,
+  }) {
+    String text = "오류발생";
+    VoidCallback? callback;
+    if (!schedule.hasError) {
+      // through [UsreProvider],can get user ID
+      if (schedule.isBooked("TestUserID")) {
+        text = "취소하기";
+        callback = () => widget.onTapCancel(schedule);
+      } else {
+        switch (schedule.state) {
+          case TownClassState.booking:
+            text = "예약하기";
+            callback = () => widget.onTapBooking(schedule);
+            break;
+          case TownClassState.bookedUp:
+            text = "마감";
+            break;
+          case TownClassState.finished:
+            text = "종료";
+            break;
+        }
+      }
+    }
+    return ElevatedButton(
+      onPressed: callback,
+      child: Text(text),
     );
   }
 
@@ -166,23 +195,23 @@ class _PanelBookingPanelState extends State<PanelBookingPanel> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SlidingUpPanel(
-        body: Padding(
-          padding: const EdgeInsets.only(bottom: 150.0),
-          child: widget.body,
-        ),
-        minHeight: 72.0,
-        maxHeight: MediaQuery.of(context).size.height,
-        controller: controller,
-        onPanelSlide: (position) {
-          _offsetNotifier.value = position;
-        },
-        isDraggable: false,
-        panel: Column(
+    final detail = widget.detail;
+    if (detail == null) {
+      return const SizedBox();
+    }
+    return SlidingUpPanel(
+      minHeight: 72.0,
+      maxHeight: MediaQuery.of(context).size.height,
+      controller: controller,
+      onPanelSlide: (position) {
+        _offsetNotifier.value = position;
+      },
+      isDraggable: false,
+      panel: Material(
+        child: Column(
           children: [
             headerWidget(
-              title: widget.detailPage.title,
+              title: detail.title,
               onTapOpen: () {
                 controller.open();
               },
@@ -195,13 +224,13 @@ class _PanelBookingPanelState extends State<PanelBookingPanel> {
                 padding: const EdgeInsets.all(16.0),
                 children: [
                   typeWidget(
-                    languageType: widget.detailPage.languageType,
-                    level: widget.detailPage.level,
-                    price: widget.detailPage.price,
+                    languageType: detail.languageType,
+                    level: detail.level,
+                    price: detail.price,
                   ),
                   const SizedBox(height: 16.0),
                   scheduleListView(
-                    scheduleList: widget.detailPage.scheduleList,
+                    scheduleList: detail.scheduleList,
                   ),
                   descText(),
                 ],

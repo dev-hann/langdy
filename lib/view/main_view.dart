@@ -45,24 +45,39 @@ class MainView extends StatelessWidget {
     final pageType = provider.pageType;
     return SafeArea(
       top: true,
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: Theme.of(context),
-        home: Material(
-          child: Builder(
-            builder: (context) {
-              switch (pageType) {
-                case PageType.home:
-                  return const HomeView();
-                case PageType.booking:
-                  return const BookingView();
-                case PageType.community:
-                  return const CommunityView();
-                case PageType.user:
-                  return const UserView();
-              }
-            },
-          ),
+      child: Scaffold(
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return SizedBox(
+              height: constraints.maxHeight,
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                theme: Theme.of(context),
+                home: Material(
+                  child: Builder(
+                    builder: (context) {
+                      switch (pageType) {
+                        case PageType.home:
+                          return const HomeView();
+                        case PageType.booking:
+                          return const BookingView();
+                        case PageType.community:
+                          return const CommunityView();
+                        case PageType.user:
+                          return const UserView();
+                      }
+                    },
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+        bottomNavigationBar: bottom(
+          currentIndex: pageType.index,
+          onTap: (index) {
+            provider.moveToPage(PageType.values[index]);
+          },
         ),
       ),
     );

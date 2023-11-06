@@ -34,7 +34,7 @@ class _TownViewState extends State<TownView> {
 
   Widget townListview({
     required Town town,
-    required Function(TownClass item) onTapTown,
+    required Function(TownClass item) onTapTownClass,
     required VoidCallback onTapAllView,
   }) {
     return Padding(
@@ -42,7 +42,7 @@ class _TownViewState extends State<TownView> {
       child: TownHorizontalListView(
         title: town.title,
         classList: town.classList,
-        onTapTown: onTapTown,
+        onTapTown: onTapTownClass,
         onTapAllView: onTapAllView,
       ),
     );
@@ -50,7 +50,7 @@ class _TownViewState extends State<TownView> {
 
   @override
   Widget build(BuildContext context) {
-    TownProvider provider = Provider.of(context);
+    final provider = Provider.of<TownProvider>(context);
     if (provider.hasError) {
       return Center(
         child: Text(provider.error!.message),
@@ -72,17 +72,20 @@ class _TownViewState extends State<TownView> {
         for (final town in townList)
           townListview(
             town: town,
-            onTapTown: (item) {
-              Navigator.of(context).push(
-                TownClassDetailView.route(item.id),
+            onTapTownClass: (townClass) async {
+              await Navigator.of(context).push(
+                TownClassDetailView.route(townClass),
               );
+              provider.requestTownPage();
             },
-            onTapAllView: () {
-              Navigator.of(context).push(
+            onTapAllView: () async {
+              await Navigator.of(context).push(
                 TownAllView.route(
                   classList: town.classList,
                 ),
               );
+
+              provider.requestTownPage();
             },
           ),
       ],

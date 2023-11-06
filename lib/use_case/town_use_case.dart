@@ -32,15 +32,37 @@ class TownUseCase {
     }
   }
 
-  Future requestBookingSchedule({
+  Future<Either<TownClassDetail, CustomError>> requestBookingSchedule({
+    required String userID,
     required String townClassID,
     required String scheduleID,
   }) async {
     try {
-      repo.requestBookingSchedule(
+      final data = await repo.requestBookingSchedule(
+        userID: userID,
         scheduleID: scheduleID,
         townClassID: townClassID,
       );
-    } catch (e) {}
+      return Left(TownClassDetail.fromMap(data));
+    } catch (e) {
+      return Right(CustomError.fromObject(e));
+    }
+  }
+
+  Future<Either<TownClassDetail, CustomError>> requestCancelSchedule({
+    required String userID,
+    required String townClassID,
+    required String scheduleID,
+  }) async {
+    try {
+      final data = await repo.requestCancelSchedule(
+        userID: userID,
+        scheduleID: scheduleID,
+        townClassID: townClassID,
+      );
+      return Left(TownClassDetail.fromMap(data));
+    } catch (e) {
+      return Right(CustomError.fromObject(e));
+    }
   }
 }
