@@ -1,26 +1,26 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:langdy/model/town_item.dart';
+import 'package:langdy/model/town_class.dart';
 
 class Town extends Equatable {
   const Town({
     required this.id,
     required this.title,
     required this.bannerImage,
-    required this.itemList,
+    required this.classList,
   });
 
   final String id;
   final String title;
   final String bannerImage;
-  final List<TownItem> itemList;
+  final List<TownClass> classList;
 
   @override
   List<Object?> get props => [
         id,
         title,
         bannerImage,
-        itemList,
+        classList,
       ];
 
   factory Town.fromMap(Map<String, dynamic> map) {
@@ -28,8 +28,8 @@ class Town extends Equatable {
       id: map["id"] as String,
       title: map['title'] as String,
       bannerImage: map["bannerImage"] as String,
-      itemList: List.from(map['itemList']).map((e) {
-        return TownItem.fromMap(e);
+      classList: List.from(map['classList']).map((e) {
+        return TownClass.fromMap(e);
       }).toList(),
     );
   }
@@ -39,7 +39,7 @@ class Town extends Equatable {
       'id': id,
       'title': title,
       'bannerImage': bannerImage,
-      'itemList': itemList.map((x) => x.toMap()).toList(),
+      'classList': classList.map((x) => x.toMap()).toList(),
     };
   }
 }

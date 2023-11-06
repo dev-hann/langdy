@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:langdy/enum/language_type.dart';
-import 'package:langdy/model/town_detail_page.dart';
-import 'package:langdy/model/town_item.dart';
+import 'package:langdy/model/town_class_detail.dart';
+import 'package:langdy/model/town_class.dart';
 import 'package:langdy/util/date_time_format.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
@@ -12,8 +12,8 @@ class PanelBookingPanel extends StatefulWidget {
     required this.detailPage,
     required this.onTapBooking,
   });
-  final TownDetailPage detailPage;
-  final Function(TownItemSchedule schedule) onTapBooking;
+  final TownClassDetail detailPage;
+  final Function(TownClassSchedule schedule) onTapBooking;
   final Widget body;
 
   @override
@@ -106,7 +106,7 @@ class _PanelBookingPanelState extends State<PanelBookingPanel> {
   }
 
   Widget scheduleItemWidget({
-    required TownItemSchedule schedule,
+    required TownClassSchedule schedule,
   }) {
     return Row(
       children: [
@@ -134,7 +134,7 @@ class _PanelBookingPanelState extends State<PanelBookingPanel> {
   }
 
   Widget scheduleListView({
-    required List<TownItemSchedule> scheduleList,
+    required List<TownClassSchedule> scheduleList,
   }) {
     return ListView.builder(
       shrinkWrap: true,

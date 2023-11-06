@@ -3,14 +3,14 @@ import 'package:equatable/equatable.dart';
 import 'package:langdy/enum/language_type.dart';
 
 // FIXME: naming... not suitable..
-enum TownItemState {
+enum TownClassState {
   booking,
   bookedUp,
   finished,
 }
 
-class TownItemSchedule extends Equatable {
-  const TownItemSchedule({
+class TownClassSchedule extends Equatable {
+  const TownClassSchedule({
     required this.id,
     required this.beginDateTime,
     required this.endDatetime,
@@ -42,8 +42,8 @@ class TownItemSchedule extends Equatable {
     };
   }
 
-  factory TownItemSchedule.fromMap(Map<String, dynamic> map) {
-    return TownItemSchedule(
+  factory TownClassSchedule.fromMap(Map<String, dynamic> map) {
+    return TownClassSchedule(
       id: map['id'],
       beginDateTime:
           DateTime.fromMillisecondsSinceEpoch(map['beginDateTime'] as int),
@@ -55,8 +55,8 @@ class TownItemSchedule extends Equatable {
   }
 }
 
-class TownItem extends Equatable {
-  const TownItem({
+class TownClass extends Equatable {
+  const TownClass({
     required this.id,
     required this.title,
     required this.bannerImage,
@@ -70,10 +70,10 @@ class TownItem extends Equatable {
   final String title;
   final String bannerImage;
   final String level;
-  final TownItemState state;
+  final TownClassState state;
   final LanguageType languageType;
   final int price;
-  final List<TownItemSchedule> scheduleList;
+  final List<TownClassSchedule> scheduleList;
 
   int get totalMaxiumUserCount {
     return scheduleList
@@ -99,17 +99,17 @@ class TownItem extends Equatable {
         scheduleList,
       ];
 
-  factory TownItem.fromMap(Map<String, dynamic> map) {
-    return TownItem(
+  factory TownClass.fromMap(Map<String, dynamic> map) {
+    return TownClass(
       id: map['id'] as String,
       title: map['title'] as String,
       bannerImage: map['bannerImage'] as String,
       level: map['level'] as String,
-      state: TownItemState.values[map['state']],
+      state: TownClassState.values[map['state']],
       languageType: LanguageType.values[map['languageType']],
       price: map['price'] as int,
       scheduleList: List.from(map['scheduleList']).map((e) {
-        return TownItemSchedule.fromMap(e);
+        return TownClassSchedule.fromMap(e);
       }).toList(),
     );
   }

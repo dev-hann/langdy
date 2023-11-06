@@ -1,15 +1,15 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:langdy/model/town_item.dart';
+import 'package:langdy/model/town_class.dart';
 import 'package:langdy/util/date_time_format.dart';
 import 'package:langdy/widget/language_card.dart';
 
-class TownItemCard extends StatelessWidget {
-  const TownItemCard({
+class TownClassCard extends StatelessWidget {
+  const TownClassCard({
     super.key,
     required this.item,
   });
-  final TownItem item;
+  final TownClass item;
 
   Widget userCountBar({
     required int maxiumCount,
@@ -67,15 +67,15 @@ class TownItemCard extends StatelessWidget {
   }
 
   Widget imageOverlayWidget({
-    required TownItemState state,
+    required TownClassState state,
   }) {
     String text = "";
     switch (state) {
-      case TownItemState.booking:
+      case TownClassState.booking:
         return const SizedBox();
-      case TownItemState.bookedUp:
+      case TownClassState.bookedUp:
         text = "마감됐어요:)";
-      case TownItemState.finished:
+      case TownClassState.finished:
         text = "종료됐어요:)";
     }
     return ColoredBox(
@@ -93,7 +93,7 @@ class TownItemCard extends StatelessWidget {
 
   Widget imageWidget({
     required String image,
-    required TownItemState state,
+    required TownClassState state,
     required bool isFree,
   }) {
     return LayoutBuilder(

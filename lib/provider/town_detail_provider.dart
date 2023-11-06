@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:langdy/model/custom_error.dart';
 import 'package:langdy/model/town_comment.dart';
-import 'package:langdy/model/town_detail_page.dart';
-import 'package:langdy/model/town_item.dart';
+import 'package:langdy/model/town_class_detail.dart';
+import 'package:langdy/model/town_class.dart';
 import 'package:langdy/use_case/town_use_case.dart';
 
 class TownDetailProvider extends ChangeNotifier {
   TownDetailProvider(this.useCase);
   final TownUseCase useCase;
-  TownDetailPage? _detailPage;
-  TownDetailPage? get detailPage => _detailPage;
+  TownClassDetail? _detailPage;
+  TownClassDetail? get detailPage => _detailPage;
   List<TownComment> get commentList {
     return _detailPage?.commentList.sublist(0, _commentPage * 5) ?? [];
   }
@@ -27,11 +27,11 @@ class TownDetailProvider extends ChangeNotifier {
   CustomError? error;
   bool get hasError => error != null;
 
-  Future requestTownDetailPage(String townID) async {
+  Future requestTownClassDetail(String townClassID) async {
     _detailPage = null;
-    final either = await useCase.requestTownDetailPage(
+    final either = await useCase.requestTownClassDetail(
       userID: "TestUserID",
-      townID: townID,
+      townClassID: townClassID,
     );
     either.fold(
       (detail) {
@@ -47,7 +47,7 @@ class TownDetailProvider extends ChangeNotifier {
   bool _loadingOverlay = false;
   bool get isOverlayLoading => _loadingOverlay;
 
-  Future requestBookingSchedule(TownItemSchedule schedule) async {
+  Future requestBookingSchedule(TownClassSchedule schedule) async {
     _loadingOverlay = true;
     notifyListeners();
 

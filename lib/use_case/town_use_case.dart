@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:langdy/model/custom_error.dart';
-import 'package:langdy/model/town_detail_page.dart';
+import 'package:langdy/model/town_class_detail.dart';
 import 'package:langdy/model/town_page.dart';
 import 'package:langdy/repo/town_repo.dart';
 
@@ -17,24 +17,30 @@ class TownUseCase {
     }
   }
 
-  Future<Either<TownDetailPage, CustomError>> requestTownDetailPage({
+  Future<Either<TownClassDetail, CustomError>> requestTownClassDetail({
     required String userID,
-    required String townID,
+    required String townClassID,
   }) async {
     try {
-      final data = await repo.requestTownDetailPage(
+      final data = await repo.requestTownClassDetail(
         userID: userID,
-        townID: townID,
+        townClassID: townClassID,
       );
-      return Left(TownDetailPage.fromMap(data));
+      return Left(TownClassDetail.fromMap(data));
     } catch (e) {
       return Right(CustomError.fromObject(e));
     }
   }
 
-  Future requestBookingSchedule(String scheduleID) async {
+  Future requestBookingSchedule({
+    required String townClassID,
+    required String scheduleID,
+  }) async {
     try {
-      repo.requestBookingSchedule(scheduleID);
+      repo.requestBookingSchedule(
+        scheduleID: scheduleID,
+        townClassID: townClassID,
+      );
     } catch (e) {}
   }
 }

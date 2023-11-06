@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:langdy/model/town.dart';
 import 'package:langdy/model/town_banner.dart';
-import 'package:langdy/model/town_item.dart';
+import 'package:langdy/model/town_class.dart';
 import 'package:langdy/provider/town_provider.dart';
 import 'package:langdy/view/booking_view/town_view/town_all_view.dart';
-import 'package:langdy/view/booking_view/town_view/town_detail_view.dart';
+import 'package:langdy/view/booking_view/town_view/town_class_detail_view.dart';
 import 'package:langdy/widget/town_banner_widget.dart';
 import 'package:langdy/widget/town_horizontal_list_view.dart';
 import 'package:provider/provider.dart';
@@ -34,14 +34,14 @@ class _TownViewState extends State<TownView> {
 
   Widget townListview({
     required Town town,
-    required Function(TownItem item) onTapTown,
+    required Function(TownClass item) onTapTown,
     required VoidCallback onTapAllView,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16.0),
       child: TownHorizontalListView(
         title: town.title,
-        townItemList: town.itemList,
+        classList: town.classList,
         onTapTown: onTapTown,
         onTapAllView: onTapAllView,
       ),
@@ -74,16 +74,13 @@ class _TownViewState extends State<TownView> {
             town: town,
             onTapTown: (item) {
               Navigator.of(context).push(
-                TownDetailView.route(item.id),
+                TownClassDetailView.route(item.id),
               );
-              // Navigator.of(context).pushNamed(
-              //   "/town_detail",
-              // );
             },
             onTapAllView: () {
               Navigator.of(context).push(
                 TownAllView.route(
-                  itemList: town.itemList,
+                  classList: town.classList,
                 ),
               );
             },

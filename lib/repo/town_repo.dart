@@ -7,10 +7,13 @@ part './town_impl.dart';
 abstract class TownRepo {
   Future requestTownPage(String userID);
 
-  Future requestTownDetailPage({
+  Future requestTownClassDetail({
     required String userID,
-    required String townID,
+    required String townClassID,
   });
 
-  Future requestBookingSchedule(String scheduleID);
+  Future requestBookingSchedule({
+    required String townClassID,
+    required String scheduleID,
+  });
 }

@@ -5,8 +5,8 @@ import 'package:langdy/model/custom_error.dart';
 import 'package:langdy/model/town.dart';
 import 'package:langdy/model/town_banner.dart';
 import 'package:langdy/model/town_comment.dart';
-import 'package:langdy/model/town_detail_page.dart';
-import 'package:langdy/model/town_item.dart';
+import 'package:langdy/model/town_class_detail.dart';
+import 'package:langdy/model/town_class.dart';
 import 'package:langdy/model/town_page.dart';
 
 class TownService {
@@ -27,17 +27,17 @@ class TownService {
         id: "01",
         title: "진실게임",
         bannerImage: _mockImageURL,
-        itemList: List.generate(
+        classList: List.generate(
           10,
           (index) {
-            return TownItem(
+            return TownClass(
               id: _mockIndex,
               title: "흥미진진 수다시간(with 진실게임)",
               bannerImage: _mockImageURL,
-              state: TownItemState.booking,
+              state: TownClassState.booking,
               languageType: LanguageType.values[index % 3],
               scheduleList: List.generate(3, (index) {
-                return TownItemSchedule(
+                return TownClassSchedule(
                   id: _mockIndex,
                   beginDateTime: DateTime.now().add(Duration(days: index)),
                   endDatetime: DateTime.now()
@@ -56,17 +56,17 @@ class TownService {
         id: "02",
         title: "줄줄이 말해요",
         bannerImage: _mockImageURL,
-        itemList: List.generate(
+        classList: List.generate(
           10,
           (index) {
-            return TownItem(
+            return TownClass(
               id: DateTime.now().millisecondsSinceEpoch.toString(),
               title: "스피디하게 쌓는 어휘력",
               bannerImage: _mockImageURL,
-              state: TownItemState.booking,
+              state: TownClassState.booking,
               languageType: LanguageType.values[index % 3],
               scheduleList: List.generate(3, (index) {
-                return TownItemSchedule(
+                return TownClassSchedule(
                   id: _mockIndex,
                   beginDateTime: DateTime.now().add(Duration(days: index)),
                   endDatetime: DateTime.now()
@@ -85,17 +85,17 @@ class TownService {
         id: "03",
         title: "진행중인 비밀토크쇼",
         bannerImage: _mockImageURL,
-        itemList: List.generate(
+        classList: List.generate(
           10,
           (index) {
-            return TownItem(
+            return TownClass(
               id: DateTime.now().millisecondsSinceEpoch.toString(),
               title: "스피디하게 쌓는 어휘력",
               bannerImage: _mockImageURL,
-              state: TownItemState.bookedUp,
+              state: TownClassState.bookedUp,
               languageType: LanguageType.values[index % 3],
               scheduleList: List.generate(3, (index) {
-                return TownItemSchedule(
+                return TownClassSchedule(
                   id: _mockIndex,
                   beginDateTime: DateTime.now().add(Duration(days: index)),
                   endDatetime: DateTime.now()
@@ -114,17 +114,17 @@ class TownService {
         id: "04",
         title: "마감된 비밀토크쇼",
         bannerImage: _mockImageURL,
-        itemList: List.generate(
+        classList: List.generate(
           10,
           (index) {
-            return TownItem(
+            return TownClass(
               id: DateTime.now().millisecondsSinceEpoch.toString(),
               title: "Test Title$index",
               bannerImage: _mockImageURL,
-              state: TownItemState.finished,
+              state: TownClassState.finished,
               languageType: LanguageType.values[index % 3],
               scheduleList: List.generate(3, (index) {
-                return TownItemSchedule(
+                return TownClassSchedule(
                   id: _mockIndex,
                   beginDateTime: DateTime.now().add(Duration(days: index)),
                   endDatetime: DateTime.now()
@@ -143,17 +143,17 @@ class TownService {
         id: "05",
         title: "마감된 랭디타운",
         bannerImage: _mockImageURL,
-        itemList: List.generate(
+        classList: List.generate(
           10,
           (index) {
-            return TownItem(
+            return TownClass(
               id: DateTime.now().millisecondsSinceEpoch.toString(),
               title: "수수께기로 쌓는 어휘량",
               bannerImage: _mockImageURL,
-              state: TownItemState.finished,
+              state: TownClassState.finished,
               languageType: LanguageType.values[index % 3],
               scheduleList: List.generate(3, (index) {
-                return TownItemSchedule(
+                return TownClassSchedule(
                   id: _mockIndex,
                   beginDateTime: DateTime.now().add(Duration(days: index)),
                   endDatetime: DateTime.now()
@@ -192,14 +192,14 @@ class TownService {
     ).toMap();
   }
 
-  Future requestTownDetailPage({
+  Future requestTownClassDetail({
     required String userID,
-    required String townItemID,
+    required String townClassID,
   }) async {
     await Future.delayed(const Duration(seconds: 1));
-    TownItem? townItem;
+    TownClass? townItem;
     for (final town in _mockTownList) {
-      final list = town.itemList.where((element) => element.id == townItemID);
+      final list = town.classList.where((element) => element.id == townClassID);
       if (list.isNotEmpty) {
         townItem = list.first;
       }
@@ -207,7 +207,7 @@ class TownService {
     if (townItem == null) {
       throw CustomError.emptyData();
     }
-    return TownDetailPage.fromTownItem(
+    return TownClassDetail.fromTownItem(
       townItem,
       commentList: List.generate(50, (index) {
         return TownComment(
@@ -221,7 +221,21 @@ class TownService {
     ).toMap();
   }
 
-  Future requestBookingSchedule(String scheduleID) async {
+  Future requestBookingSchedule({
+    required String townClassID,
+    required String scheduleID,
+  }) async {
+    TownClass? townItem;
+    for (final town in _mockTownList) {
+      final list = town.classList.where((element) => element.id == townClassID);
+      if (list.isNotEmpty) {
+        townItem = list.first;
+      }
+    }
+    if (townItem == null) {
+      throw CustomError.emptyData();
+    }
+
     return true;
   }
 }

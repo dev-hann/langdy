@@ -1,9 +1,9 @@
 import 'package:langdy/enum/language_type.dart';
 import 'package:langdy/model/town_comment.dart';
-import 'package:langdy/model/town_item.dart';
+import 'package:langdy/model/town_class.dart';
 
-class TownDetailPage extends TownItem {
-  const TownDetailPage({
+class TownClassDetail extends TownClass {
+  const TownClassDetail({
     required super.id,
     required super.title,
     required super.bannerImage,
@@ -44,16 +44,16 @@ class TownDetailPage extends TownItem {
     };
   }
 
-  factory TownDetailPage.fromMap(Map<String, dynamic> map) {
-    return TownDetailPage(
+  factory TownClassDetail.fromMap(Map<String, dynamic> map) {
+    return TownClassDetail(
       id: map['id'] as String,
       title: map['title'] as String,
       bannerImage: map['bannerImage'] as String,
       level: map['level'] as String,
-      state: TownItemState.values[map['state']],
+      state: TownClassState.values[map['state']],
       languageType: LanguageType.values[map['languageType']],
       scheduleList: List.from(map['scheduleList']).map((e) {
-        return TownItemSchedule.fromMap(e);
+        return TownClassSchedule.fromMap(e);
       }).toList(),
       price: map['price'] as int,
       commentList: List.from(map['commentList']).map((e) {
@@ -62,11 +62,11 @@ class TownDetailPage extends TownItem {
     );
   }
 
-  factory TownDetailPage.fromTownItem(
-    TownItem item, {
+  factory TownClassDetail.fromTownItem(
+    TownClass item, {
     required List<TownComment> commentList,
   }) {
-    return TownDetailPage(
+    return TownClassDetail(
       id: item.id,
       title: item.title,
       bannerImage: item.bannerImage,

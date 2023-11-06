@@ -8,18 +8,24 @@ class TownImpl extends TownRepo {
   }
 
   @override
-  Future requestTownDetailPage({
+  Future requestTownClassDetail({
     required String userID,
-    required String townID,
+    required String townClassID,
   }) {
-    return service.requestTownDetailPage(
+    return service.requestTownClassDetail(
       userID: userID,
-      townItemID: townID,
+      townClassID: townClassID,
     );
   }
 
   @override
-  Future requestBookingSchedule(String scheduleID) {
-    return service.requestBookingSchedule(scheduleID);
+  Future requestBookingSchedule({
+    required String townClassID,
+    required String scheduleID,
+  }) {
+    return service.requestBookingSchedule(
+      townClassID: townClassID,
+      scheduleID: scheduleID,
+    );
   }
 }

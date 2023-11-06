@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:langdy/model/town_item.dart';
+import 'package:langdy/model/town_class.dart';
 import 'package:langdy/widget/town_item_card.dart';
 
 class TownHorizontalListView extends StatelessWidget {
   const TownHorizontalListView({
     super.key,
     required this.title,
-    required this.townItemList,
+    required this.classList,
     required this.onTapAllView,
     required this.onTapTown,
   });
   final String title;
-  final List<TownItem> townItemList;
+  final List<TownClass> classList;
   final VoidCallback onTapAllView;
-  final Function(TownItem item) onTapTown;
+  final Function(TownClass item) onTapTown;
 
   Widget titleWidget() {
     return Row(
@@ -51,7 +51,7 @@ class TownHorizontalListView extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                for (final item in townItemList)
+                for (final item in classList)
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8.0,
@@ -60,7 +60,7 @@ class TownHorizontalListView extends StatelessWidget {
                       onTap: () {
                         onTapTown(item);
                       },
-                      child: TownItemCard(
+                      child: TownClassCard(
                         item: item,
                       ),
                     ),

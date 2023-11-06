@@ -5,32 +5,31 @@ import 'package:langdy/widget/town_booking_panel.dart';
 import 'package:langdy/widget/town_comment_list_tile.dart';
 import 'package:provider/provider.dart';
 
-class TownDetailView extends StatefulWidget {
-  const TownDetailView({
+class TownClassDetailView extends StatefulWidget {
+  const TownClassDetailView({
     super.key,
     required this.townID,
   });
   final String townID;
 
-  static String get name => '/town_detail';
   static PageRoute route(String townID) {
     return MaterialPageRoute(builder: (_) {
-      return TownDetailView(
+      return TownClassDetailView(
         townID: townID,
       );
     });
   }
 
   @override
-  State<TownDetailView> createState() => _TownDetailViewState();
+  State<TownClassDetailView> createState() => _TownClassDetailViewState();
 }
 
-class _TownDetailViewState extends State<TownDetailView> {
+class _TownClassDetailViewState extends State<TownClassDetailView> {
   @override
   void initState() {
     super.initState();
     Provider.of<TownDetailProvider>(context, listen: false)
-        .requestTownDetailPage(widget.townID);
+        .requestTownClassDetail(widget.townID);
   }
 
   AppBar appBar({

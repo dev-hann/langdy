@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:langdy/model/town_item.dart';
+import 'package:langdy/model/town_class.dart';
 import 'package:langdy/widget/town_item_card.dart';
 
 class TownAllView extends StatelessWidget {
   const TownAllView({
     super.key,
-    required this.itemList,
+    required this.classList,
   });
-  final List<TownItem> itemList;
+  final List<TownClass> classList;
   static PageRoute route({
-    required List<TownItem> itemList,
+    required List<TownClass> classList,
   }) {
     return MaterialPageRoute(
       builder: (context) {
         return TownAllView(
-          itemList: itemList,
+          classList: classList,
         );
       },
     );
@@ -37,7 +37,7 @@ class TownAllView extends StatelessWidget {
         crossAxisCount: 2,
         childAspectRatio: 0.8,
         children: [
-          for (final item in itemList) TownItemCard(item: item),
+          for (final item in classList) TownClassCard(item: item),
         ],
       ),
     );
