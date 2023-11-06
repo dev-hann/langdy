@@ -23,14 +23,15 @@ class TownClass extends Equatable {
   final String id;
   final String title;
   final String bannerImage;
-  final String level;
+  final int level;
   final LanguageType languageType;
   final int price;
   final List<TownClassSchedule> scheduleList;
 
   TownClassState get state {
-    final list = scheduleList;
-    if (list.where((e) => e.endDatetime.isAfter(DateTime.now())).isEmpty) {
+    if (scheduleList
+        .where((e) => e.endDatetime.isAfter(DateTime.now()))
+        .isEmpty) {
       return TownClassState.finished;
     }
     if (totalMaxiumUserCount == totalCurrentUserCount) {
@@ -68,7 +69,7 @@ class TownClass extends Equatable {
       id: map['id'] as String,
       title: map['title'] as String,
       bannerImage: map['bannerImage'] as String,
-      level: map['level'] as String,
+      level: map['level'] as int,
       languageType: LanguageType.values[map['languageType']],
       price: map['price'] as int,
       scheduleList: List.from(map['scheduleList']).map((e) {
@@ -93,7 +94,7 @@ class TownClass extends Equatable {
     String? id,
     String? title,
     String? bannerImage,
-    String? level,
+    int? level,
     LanguageType? languageType,
     int? price,
     List<TownClassSchedule>? scheduleList,

@@ -12,8 +12,10 @@ class TownBannerWidget extends StatelessWidget {
   final Function(TownBanner item) onTapBanner;
   final ValueNotifier<int> _pageNotifier = ValueNotifier(0);
 
-  Widget pageCountWidget() {
-    final length = itemList.length;
+  Widget pageCountWidget({
+    required List<TownBanner> bannerList,
+  }) {
+    final length = bannerList.length;
     if (length == 1) {
       return const SizedBox();
     }
@@ -31,7 +33,7 @@ class TownBannerWidget extends StatelessWidget {
           valueListenable: _pageNotifier,
           builder: (context, value, _) {
             return Text(
-              "${value + 1}/${itemList.length}",
+              "${value + 1}/$length",
               style: const TextStyle(
                 color: Colors.white,
               ),
@@ -42,7 +44,9 @@ class TownBannerWidget extends StatelessWidget {
     );
   }
 
-  Widget imageListView() {
+  Widget imageListView({
+    required List<TownBanner> bannerList,
+  }) {
     return CarouselSlider(
       options: CarouselOptions(
         autoPlay: true,
@@ -54,7 +58,7 @@ class TownBannerWidget extends StatelessWidget {
           _pageNotifier.value = index;
         },
       ),
-      items: itemList.map((banner) {
+      items: bannerList.map((banner) {
         return GestureDetector(
           onTap: () {
             onTapBanner(banner);
@@ -80,12 +84,16 @@ class TownBannerWidget extends StatelessWidget {
           child: Stack(
             fit: StackFit.expand,
             children: [
-              imageListView(),
+              imageListView(
+                bannerList: itemList,
+              ),
               Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: pageCountWidget(),
+                  child: pageCountWidget(
+                    bannerList: itemList,
+                  ),
                 ),
               ),
             ],

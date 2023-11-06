@@ -4,6 +4,7 @@ import 'package:langdy/model/town_class_detail.dart';
 import 'package:langdy/model/town_class.dart';
 import 'package:langdy/model/town_class_schedule.dart';
 import 'package:langdy/util/date_time_format.dart';
+import 'package:langdy/widget/border_button.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class PanelBookingPanel extends StatefulWidget {
@@ -43,7 +44,12 @@ class _PanelBookingPanelState extends State<PanelBookingPanel> {
                   child: Row(
                     children: [
                       Expanded(
-                        child: Text(title),
+                        child: Text(
+                          title,
+                          style: Theme.of(context).textTheme.titleLarge,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                       IconButton(
                         onPressed: onTapClose,
@@ -92,14 +98,27 @@ class _PanelBookingPanelState extends State<PanelBookingPanel> {
 
   Widget typeWidget({
     required LanguageType languageType,
-    required String level,
+    required int level,
     required int price,
   }) {
     return Row(
       children: [
-        Text("언어: ${languageType.toLabel()}"),
+        Row(
+          children: [
+            const Text("언어: "),
+            BorderButton.language(
+              languageType,
+              filled: false,
+            ),
+          ],
+        ),
         const SizedBox(width: 8.0),
-        Text("난이도: $level"),
+        Row(
+          children: [
+            const Text("난이도: "),
+            BorderButton.level(level),
+          ],
+        ),
         const SizedBox(width: 8.0),
         Text("참가비: $price"),
       ],
@@ -116,11 +135,17 @@ class _PanelBookingPanelState extends State<PanelBookingPanel> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                  DateTimeFormat.townBookingDateformat(schedule.beginDateTime)),
+                DateTimeFormat.townBookingDateformat(schedule.beginDateTime),
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
               Text(
-                  "${DateTimeFormat.townBookingTimeformat(schedule.beginDateTime)} - ${DateTimeFormat.townBookingTimeformat(schedule.endDatetime)}"),
+                "${DateTimeFormat.townBookingTimeformat(schedule.beginDateTime)} - ${DateTimeFormat.townBookingTimeformat(schedule.endDatetime)}",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
               Text(
-                  "${schedule.currentUserCount}명 예약 / ${schedule.maxiumUserCount}명 정원"),
+                "${schedule.currentUserCount}명 예약 / ${schedule.maxiumUserCount}명 정원",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
             ],
           ),
         ),
@@ -182,15 +207,8 @@ class _PanelBookingPanelState extends State<PanelBookingPanel> {
   }
 
   Widget descText() {
-    return const Text.rich(
-      TextSpan(children: [
-        TextSpan(text: "랭디타운 이용안내\n"),
-        TextSpan(
-            text:
-                "* 랭디타운은 시작시간 12시간 전부터 입장할 수 있습니다. 미리 입장하여 랭디타운 이용법을 익혀보세요.\n"),
-        TextSpan(text: "* 원활한 진행을 위해 시작시간 15분 전에 입장하여 준비해주세요."),
-      ]),
-    );
+    return const Text(
+        "랭디타운 이용안내\n* 랭디타운은 시작시간 12시간 전부터 입장할 수 있습니다. 미리 입장하여 랭디타운 이용법을 익혀보세요.\n* 원활한 진행을 위해 시작시간 15분 전에 입장하여 준비해주세요.");
   }
 
   @override

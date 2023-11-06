@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:langdy/model/town_class.dart';
-import 'package:langdy/model/town_class_detail.dart';
-import 'package:langdy/model/town_class_schedule.dart';
 import 'package:langdy/model/town_comment.dart';
 import 'package:langdy/provider/town_detail_provider.dart';
 import 'package:langdy/widget/town_booking_panel.dart';
@@ -66,7 +64,10 @@ class _TownClassDetailViewState extends State<TownClassDetailView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("참여자 후기 (최근 50건)"),
+        Text(
+          "참여자 후기 (최근 50건)",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         const SizedBox(height: 16.0),
         for (final comment in commentList)
           TownCommentListTile(

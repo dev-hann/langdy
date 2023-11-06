@@ -5,8 +5,6 @@ import 'package:langdy/view/booking_view/town_view/town_view.dart';
 class BookingView extends StatelessWidget {
   const BookingView({super.key});
 
-  static String get name => '/booking';
-
   @override
   Widget build(BuildContext context) {
     return const DefaultTabController(

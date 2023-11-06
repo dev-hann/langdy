@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:langdy/model/town_class.dart';
-import 'package:langdy/widget/town_item_card.dart';
+import 'package:langdy/widget/town_class_card.dart';
 
 class TownAllView extends StatelessWidget {
   const TownAllView({

@@ -1,4 +1,3 @@
-// only for test.
 import 'dart:math';
 
 import 'package:langdy/enum/language_type.dart';
@@ -11,6 +10,7 @@ import 'package:langdy/model/town_class_schedule.dart';
 import 'package:langdy/model/town_comment.dart';
 import 'package:langdy/model/town_page.dart';
 
+// only for Test
 class TownTestServer {
   TownTestServer._() {
     initTestData();
@@ -26,10 +26,13 @@ class TownTestServer {
 
   final List<Town> _mockTownList = [];
   final List<TownComment> _mockCommentList = [];
+  bool _inited = false;
   void initTestData() {
-    if (_mockTownList.isNotEmpty) {
+    if (_inited) {
       return;
     }
+    _inited = true;
+    // load mock CommentList
     _mockCommentList.addAll(List.generate(50, (index) {
       return TownComment(
         userName: "TestName$index",
@@ -39,6 +42,8 @@ class TownTestServer {
         comment: 'Testcomment' * index,
       );
     }));
+
+    // load mock townList
     _mockTownList.addAll([
       Town(
         id: "01",
@@ -51,7 +56,6 @@ class TownTestServer {
               id: _mockIndex,
               title: "흥미진진 수다시간(with 진실게임)",
               bannerImage: _mockImageURL,
-              // state: TownClassState.booking,
               languageType: LanguageType.values[index % 3],
               scheduleList: List.generate(2, (index) {
                 return TownClassSchedule(
@@ -64,11 +68,12 @@ class TownTestServer {
                 );
               }),
               price: 0,
-              level: "level$index",
+              level: index,
             );
           },
         ),
       ),
+      // add Error Town Data
       Town(
         id: "Error",
         title: "에러 발생 항목",
@@ -80,7 +85,6 @@ class TownTestServer {
               id: "Error",
               title: "흥미진진 수다시간(with 진실게임)",
               bannerImage: _mockImageURL,
-              // state: TownClassState.booking,
               languageType: LanguageType.values[index % 3],
               scheduleList: List.generate(2, (index) {
                 return TownClassSchedule(
@@ -93,7 +97,7 @@ class TownTestServer {
                 );
               }),
               price: 0,
-              level: "level$index",
+              level: index,
             );
           },
         ),
@@ -109,7 +113,6 @@ class TownTestServer {
               id: DateTime.now().millisecondsSinceEpoch.toString(),
               title: "스피디하게 쌓는 어휘력",
               bannerImage: _mockImageURL,
-              // state: TownClassState.booking,
               languageType: LanguageType.values[index % 3],
               scheduleList: List.generate(3, (index) {
                 return TownClassSchedule(
@@ -123,7 +126,7 @@ class TownTestServer {
                 );
               }),
               price: 0,
-              level: "level$index",
+              level: index,
             );
           },
         ),
@@ -139,7 +142,6 @@ class TownTestServer {
               id: DateTime.now().millisecondsSinceEpoch.toString(),
               title: "스피디하게 쌓는 어휘력",
               bannerImage: _mockImageURL,
-              // state: TownClassState.bookedUp,
               languageType: LanguageType.values[index % 3],
               scheduleList: List.generate(3, (index) {
                 return TownClassSchedule(
@@ -152,7 +154,7 @@ class TownTestServer {
                 );
               }),
               price: 0,
-              level: "level$index",
+              level: index,
             );
           },
         ),
@@ -168,7 +170,6 @@ class TownTestServer {
               id: DateTime.now().millisecondsSinceEpoch.toString(),
               title: "Test Title$index",
               bannerImage: _mockImageURL,
-              // state: TownClassState.finished,
               languageType: LanguageType.values[index % 3],
               scheduleList: List.generate(3, (index) {
                 return TownClassSchedule(
@@ -183,7 +184,7 @@ class TownTestServer {
                 );
               }),
               price: 0,
-              level: "level$index",
+              level: index,
             );
           },
         ),
@@ -199,7 +200,6 @@ class TownTestServer {
               id: DateTime.now().millisecondsSinceEpoch.toString(),
               title: "수수께기로 쌓는 어휘량",
               bannerImage: _mockImageURL,
-              // state: TownClassState.finished,
               languageType: LanguageType.values[index % 3],
               scheduleList: List.generate(3, (index) {
                 return TownClassSchedule(
@@ -214,7 +214,7 @@ class TownTestServer {
                 );
               }),
               price: 0,
-              level: "level$index",
+              level: index,
             );
           },
         ),
@@ -279,7 +279,6 @@ class TownTestServer {
     required String scheduleID,
   }) async {
     await _delay();
-
     if (townClassID == "Error") {
       throw Exception("Error Test");
     }

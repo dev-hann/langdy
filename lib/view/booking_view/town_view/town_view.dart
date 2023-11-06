@@ -20,6 +20,10 @@ class _TownViewState extends State<TownView> {
   @override
   void initState() {
     super.initState();
+    refreshTownPage();
+  }
+
+  void refreshTownPage() {
     Provider.of<TownProvider>(context, listen: false).requestTownPage();
   }
 
@@ -51,11 +55,6 @@ class _TownViewState extends State<TownView> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<TownProvider>(context);
-    if (provider.hasError) {
-      return Center(
-        child: Text(provider.error!.message),
-      );
-    }
     final townPage = provider.townPage;
     if (townPage == null) {
       return const Center(
@@ -76,7 +75,7 @@ class _TownViewState extends State<TownView> {
               await Navigator.of(context).push(
                 TownClassDetailView.route(townClass),
               );
-              provider.requestTownPage();
+              refreshTownPage();
             },
             onTapAllView: () async {
               await Navigator.of(context).push(
@@ -84,8 +83,7 @@ class _TownViewState extends State<TownView> {
                   classList: town.classList,
                 ),
               );
-
-              provider.requestTownPage();
+              refreshTownPage();
             },
           ),
       ],

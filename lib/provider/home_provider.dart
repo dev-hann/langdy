@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:langdy/enum/page_type.dart';
+
+enum PageType {
+  home,
+  booking,
+  community,
+  user,
+}
 
 class HomeProvider extends ChangeNotifier {
   int _pageIndex = 0;
@@ -14,7 +20,6 @@ class HomeProvider extends ChangeNotifier {
 
   PageType get pageType => _pageType;
 
-  // FIXME: Need Refactoring..
   void moveToPage(PageType value) {
     _pageType = value;
     notifyListeners();

@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:langdy/enum/language_type.dart';
 import 'package:langdy/model/town_class.dart';
 import 'package:langdy/model/town_class_schedule.dart';
@@ -48,8 +47,7 @@ class TownClassDetail extends TownClass {
       id: map['id'] as String,
       title: map['title'] as String,
       bannerImage: map['bannerImage'] as String,
-      level: map['level'] as String,
-      // state: TownClassState.values[map['state']],
+      level: map['level'] as int,
       languageType: LanguageType.values[map['languageType']],
       scheduleList: List.from(map['scheduleList']).map((e) {
         return TownClassSchedule.fromMap(e);
@@ -61,6 +59,7 @@ class TownClassDetail extends TownClass {
     );
   }
 
+  // for test server
   factory TownClassDetail.fromTownItem(
     TownClass item, {
     required List<TownComment> commentList,
@@ -82,7 +81,7 @@ class TownClassDetail extends TownClass {
     String? id,
     String? title,
     String? bannerImage,
-    String? level,
+    int? level,
     LanguageType? languageType,
     int? price,
     List<TownClassSchedule>? scheduleList,

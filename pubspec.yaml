@@ -1,6 +1,6 @@
 name: langdy
-description: A new Flutter project.
-publish_to: "none" # Remove this line if you wish to publish to pub.dev
+description: Langdy Clone Coding.
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
@@ -9,14 +9,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # State manger
   provider:
-  carousel_slider:
+
+  # Utils
   equatable:
-  auto_size_text:
-  cupertino_icons: ^1.0.2
   intl:
-  sliding_up_panel:
   dartz:
+
+  # View
+  carousel_slider:
+  auto_size_text:
+  cupertino_icons:
+  sliding_up_panel:
 
 dev_dependencies:
   flutter_test:

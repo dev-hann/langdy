@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:langdy/enum/page_type.dart';
 import 'package:langdy/provider/home_provider.dart';
 import 'package:langdy/view/booking_view/booking_view.dart';
 import 'package:langdy/view/community_view/community_view.dart';
@@ -39,39 +38,48 @@ class MainView extends StatelessWidget {
     );
   }
 
+  Widget body({
+    required PageType pageType,
+  }) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SizedBox(
+          height: constraints.maxHeight,
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: Theme.of(context),
+            home: Material(
+              child: Builder(
+                builder: (context) {
+                  switch (pageType) {
+                    case PageType.home:
+                      return const HomeView();
+                    case PageType.booking:
+                      return const BookingView();
+                    case PageType.community:
+                      return const CommunityView();
+                    case PageType.user:
+                      return const UserView();
+                  }
+                },
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<HomeProvider>(context);
     final pageType = provider.pageType;
     return SafeArea(
       top: true,
+      bottom: true,
       child: Scaffold(
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            return SizedBox(
-              height: constraints.maxHeight,
-              child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                theme: Theme.of(context),
-                home: Material(
-                  child: Builder(
-                    builder: (context) {
-                      switch (pageType) {
-                        case PageType.home:
-                          return const HomeView();
-                        case PageType.booking:
-                          return const BookingView();
-                        case PageType.community:
-                          return const CommunityView();
-                        case PageType.user:
-                          return const UserView();
-                      }
-                    },
-                  ),
-                ),
-              ),
-            );
-          },
+        body: body(
+          pageType: pageType,
         ),
         bottomNavigationBar: bottom(
           currentIndex: pageType.index,

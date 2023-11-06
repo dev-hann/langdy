@@ -1,8 +1,9 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:langdy/enum/language_type.dart';
 import 'package:langdy/model/town_class.dart';
 import 'package:langdy/util/date_time_format.dart';
-import 'package:langdy/widget/language_card.dart';
+import 'package:langdy/widget/border_button.dart';
 
 class TownClassCard extends StatelessWidget {
   const TownClassCard({
@@ -25,7 +26,7 @@ class TownClassCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("$currentCount명 에약"),
+                  Text("$currentCount명 예약"),
                   Text("$maxiumCount명 정원"),
                 ],
               ),
@@ -129,48 +130,73 @@ class TownClassCard extends StatelessWidget {
     );
   }
 
+  Widget typeListView({
+    required LanguageType languageType,
+    required int level,
+  }) {
+    return Row(
+      children: [
+        BorderButton.language(languageType),
+        const SizedBox(width: 8.0),
+        BorderButton.level(level),
+      ],
+    );
+  }
+
+  Widget title({
+    required String title,
+  }) {
+    return AutoSizeText(
+      title,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      maxFontSize: 18,
+      minFontSize: 12,
+    );
+  }
+
+  Widget scheduleListView() {
+    return Text(
+      item.scheduleList
+          .map((e) => e.beginDateTime)
+          .map((dateTime) => DateTimeFormat.townFormat(dateTime))
+          .join(", "),
+      style: const TextStyle(color: Colors.grey),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Builder(builder: (context) {
-      final size = MediaQuery.of(context).size;
-      final width = size.width / 1.8;
-      return SizedBox(
-        width: width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            imageWidget(
-              image: item.bannerImage,
-              isFree: item.price == 0,
-              state: item.state,
-            ),
-            Row(
-              children: [
-                LanguageCard(type: item.languageType),
-                Text(item.level),
-              ],
-            ),
-            AutoSizeText(
-              item.title,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              maxFontSize: 16,
-              minFontSize: 14,
-            ),
-            Text(
-              item.scheduleList
-                  .map((e) => e.beginDateTime)
-                  .map((dateTime) => DateTimeFormat.townFormat(dateTime))
-                  .join(", "),
-              style: const TextStyle(color: Colors.grey),
-            ),
-            userCountBar(
-              maxiumCount: item.totalMaxiumUserCount,
-              currentCount: item.totalCurrentUserCount,
-            ),
-          ],
-        ),
-      );
-    });
+    final size = MediaQuery.of(context).size;
+    final width = size.width / 1.8;
+    return SizedBox(
+      width: width,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          imageWidget(
+            image: item.bannerImage,
+            isFree: item.price == 0,
+            state: item.state,
+          ),
+          const SizedBox(height: 8.0),
+          typeListView(
+            languageType: item.languageType,
+            level: item.level,
+          ),
+          const SizedBox(height: 8.0),
+          title(
+            title: item.title,
+          ),
+          const SizedBox(height: 8.0),
+          scheduleListView(),
+          const SizedBox(height: 16.0),
+          userCountBar(
+            maxiumCount: item.totalMaxiumUserCount,
+            currentCount: item.totalCurrentUserCount,
+          ),
+        ],
+      ),
+    );
   }
 }

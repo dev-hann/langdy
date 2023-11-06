@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:langdy/model/custom_error.dart';
 import 'package:langdy/model/town_page.dart';
 import 'package:langdy/use_case/town_use_case.dart';
 
@@ -11,8 +10,8 @@ class TownProvider extends ChangeNotifier {
 
   TownPage? get townPage => _townPage;
 
-  CustomError? error;
-  bool get hasError => error != null;
+  // CustomError? error;
+  // bool get hasError => error != null;
 
   void requestTownPage() async {
     final either = await useCase.requestTownPage("TestUserID");
@@ -21,7 +20,7 @@ class TownProvider extends ChangeNotifier {
         _townPage = data;
       },
       (e) {
-        error = e;
+        // error = e;
       },
     );
     notifyListeners();

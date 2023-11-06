@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:langdy/model/town_class.dart';
-import 'package:langdy/widget/town_item_card.dart';
+import 'package:langdy/widget/town_class_card.dart';
 
 class TownHorizontalListView extends StatelessWidget {
   const TownHorizontalListView({
@@ -16,15 +16,22 @@ class TownHorizontalListView extends StatelessWidget {
   final Function(TownClass item) onTapTown;
 
   Widget titleWidget() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(title),
-        GestureDetector(
-          onTap: onTapAllView,
-          child: const Text("전체보기"),
-        ),
-      ],
+    return Builder(
+      builder: (context) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            GestureDetector(
+              onTap: onTapAllView,
+              child: const Text("전체보기"),
+            ),
+          ],
+        );
+      },
     );
   }
 

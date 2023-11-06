@@ -11,6 +11,9 @@ class CustomError extends Equatable {
 
   // TODO: make custom message by error type
   factory CustomError.fromObject(Object e) {
+    if (e is CustomError) {
+      return e;
+    }
     if (e is Error) {
       print(e.stackTrace);
     }
