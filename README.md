@@ -2,7 +2,7 @@
 
 Clone Coding Langdy App.
 
-## Perpose
+## 목표
 
 ### 공통
 
